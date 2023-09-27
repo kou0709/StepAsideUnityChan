@@ -20,84 +20,71 @@ public class ItemGenerator : MonoBehaviour
 
     private float ARange = 40f;
 
-    //40～50m先の位置をキープする
-    private float speed = 16f;
 
     private GameObject unitychan;
 
-
-    Camera cam;
-
-    private float difference;
-
-    private float DeadLine = 0f;
+    private float BLine = 0f;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        cam = Camera.main;
 
-        DeadLine = startPos;
+        BLine += startPos;
 
         this.unitychan = GameObject.Find("unitychan");
-        
 
-    // Update is called once per frame
+    }
+     // Update is called once per frame
     void Update()
-    {
-         if(goalPos>DeadLine && DeadLine <unitychan.transform.position.z + ARange)
-         {
-
-            //どのアイテムを出すのかをランダムに設定
-            int num = Random.Range(1, 11);
-            if ( num <=2)
-            {
-                //コーンをx軸方向二一直線に生成
-                for (float j = -1; j <= 1; j += 0.4f)
-                {
-                    GameObject cone = Instantiate(conePrefab);
-                    cone.transform.position = new Vector3(4 * j, cone.transform.position.y, DeadLine);
-
-                }
-            }
-            else
-            {
-                //レーンごとにアイテムを生成
-                for (int j = -1; j <= 1; j++)
-                {
-                    //アイテムの種類を決める
-                    int item = Random.Range(1, 11);
-
-                    //アイテムを置くZ座標のオフセットをランダムに設定
-                    int offsetZ = Random.Range(-5, 6);
-
-                    //60％コイン配置:30％車配置:10％何もなし
-                    if(1 <= item && item <= 6)
-                    {
-                        //コインを生成
-                        GameObject coin = Instantiate(coinPrefab);
-                        coin.transform.position = new Vector3(posRange * j, coin.transform.position.y, DeadLine + offsetZ);
-
-                    }
-                    else if(7 <= item && item <= 9)
-                    {
-                        //車を生成
-                        GameObject car = Instantiate(carPrefab);
-                        car.transform.position = new Vector3(posRange * j, car.transform.position.y, DeadLine + offsetZ);
-                    }
-                }
-            }
-                DeadLine += 15;
-         }
-    }
-        if (this.gameObject.tag == "CarTag"||this.gameObject.tag =="TrafficConeTag"|| this.gameObject.tag == "CoinTag")
         {
-            if ( cam.transform.position.z > this.transform.position.z)
+            if (goalPos > BLine && BLine < unitychan.transform.position.z + ARange)
             {
-                Destroy(this.gameObject);
-            }
-        }
 
+                //どのアイテムを出すのかをランダムに設定
+                int num = Random.Range(1, 11);
+                if (num <= 2)
+                {
+                    //コーンをx軸方向二一直線に生成
+                    for (float j = -1; j <= 1; j += 0.4f)
+                    {
+                        GameObject cone = Instantiate(conePrefab);
+                        cone.transform.position = new Vector3(4 * j, cone.transform.position.y, BLine);
+
+                    }
+                }
+                else
+                {
+                    //レーンごとにアイテムを生成
+                    for (int j = -1; j <= 1; j++)
+                    {
+                        //アイテムの種類を決める
+                        int item = Random.Range(1, 11);
+
+                        //アイテムを置くZ座標のオフセットをランダムに設定
+                        int offsetZ = Random.Range(-5, 6);
+
+                        //60％コイン配置:30％車配置:10％何もなし
+                        if (1 <= item && item <= 6)
+                        {
+                            //コインを生成
+                            GameObject coin = Instantiate(coinPrefab);
+                            coin.transform.position = new Vector3(posRange * j, coin.transform.position.y, BLine + offsetZ);
+
+                        }
+                        else if (7 <= item && item <= 9)
+                        {
+                            //車を生成
+                            GameObject car = Instantiate(carPrefab);
+                            car.transform.position = new Vector3(posRange * j, car.transform.position.y, BLine + offsetZ);
+                        }
+                    }
+                }
+                BLine += 15;
+            }
+            Debug.Log(BLine);
     }
+
+
+    
 }
